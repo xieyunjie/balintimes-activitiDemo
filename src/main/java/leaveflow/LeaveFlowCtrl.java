@@ -47,7 +47,7 @@ public class LeaveFlowCtrl {
 	public void startProcess() {
 		String assignee = "谢云杰";
 		Map<String, Object> variablesMap = new HashMap<String, Object>(2);
-		variablesMap.put("days", 1); // 请假天数
+		variablesMap.put("days", 5); // 请假天数
 		variablesMap.put("creator", assignee); // 提交执行人
 		// 实例
 		ProcessInstance pi = processEngine.getRuntimeService()
@@ -69,17 +69,17 @@ public class LeaveFlowCtrl {
 	}
 
 	/**
-	 * 办理任务 如果当前节点当中存在<流程变量>的判断，一定要传入相关值，否则，节点会执行，但只会重新返回当前节点
+	 * 办理任务 如果当前节点当中存在<流程变量>的判断，一定要传入相关值，否则，节点只会重新返回当前节点
 	 * */
 	@Test
 	public void handleTask() {
-//		 String taskID = "72606";
+//		 String taskID = "15006";
 //		 // 办理任务 谢云杰(creator执行后,会触发leaveflow.LeaderExecutor)
 //		 processEngine.getTaskService().complete(taskID);
 
-		String taskID = "75102";
+		String taskID = "17502";
 		Map<String, Object> variablesMap = new HashMap<String, Object>(1);
-		variablesMap.put("pass", "0");
+		variablesMap.put("pass", "1");
 		// 通过个人任务获取到流程实例ID
 		Task task = processEngine.getTaskService().createTaskQuery()
 				.taskId(taskID).singleResult();
@@ -87,8 +87,17 @@ public class LeaveFlowCtrl {
 
 		// 办理任务 团队主管审核(主管执行后,会触发leaveflow.LeaderExecutor)
 		processEngine.getTaskService().addComment(taskID, processInsID,
-				"不能批准呀！！");
-//		processEngine.getTaskService().setVariablesLocal(taskID, variablesMap);
+				"不能批准呀?！！");
+		// processEngine.getTaskService().setVariablesLocal(taskID,
+		// variablesMap);
+		processEngine.getTaskService().complete(taskID, variablesMap);
+	}
+
+	@Test
+	public void completeTask() {
+		String taskID = "20005";
+		Map<String, Object> variablesMap = new HashMap<String, Object>(1);
+		variablesMap.put("pass", "0");
 		processEngine.getTaskService().complete(taskID,variablesMap);
 	}
 }

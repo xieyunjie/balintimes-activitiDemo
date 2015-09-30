@@ -27,6 +27,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="jdbcPassword" value="sa1234"></property>
 		<!-- 没有表创建表 -->
 		<property name="databaseSchemaUpdate" value="true"></property>
+		<property name="jobExecutorActivate" value="true"></property>
 	</bean>
 
 </beans>

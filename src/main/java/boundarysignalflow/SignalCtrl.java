@@ -1,4 +1,4 @@
-package boundaryflow;
+package boundarysignalflow;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,52 +6,69 @@ import java.util.Map;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
-import org.activiti.engine.impl.ProcessEngineImpl;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.junit.Test;
 
-public class BoundaryCtrl {
+public class SignalCtrl {
 	private ProcessEngine processEngine = ProcessEngines
 			.getDefaultProcessEngine();
 
 	@Test
 	public void deploy() {
-		Deployment deployment = processEngine.getRepositoryService()
-				.createDeployment().name("BoundaryProcess流程")
-				.addClasspathResource("boundaryflow/BoundaryProcess.bpmn")
+
+		Deployment deployment = processEngine
+				.getRepositoryService()
+				.createDeployment()
+				.name("boundarysignalflow流程")
+				.addClasspathResource(
+						"boundarysignalflow/BoundarySignalProcess.bpmn")
+				.addClasspathResource(
+						"boundarysignalflow/BoundarySignalProcess.png")
 				.deploy();
 
 		System.out.println(deployment);
 
 		ProcessDefinition processDefinition = processEngine
 				.getRepositoryService().createProcessDefinitionQuery()
-				.deploymentId(deployment.getId())
 				.orderByProcessDefinitionVersion().desc().singleResult();
-		// .orderByProcessDefinitionVersion().desc().singleResult();
 		System.out.println("id:" + processDefinition.getId());
 		System.out.println("name:" + processDefinition.getName());
-
-		processEngine.getProcessEngineConfiguration().getJobExecutor().start();
 	}
 
 	@Test
-	public void startProcess() throws InterruptedException {
-		Map<String, Object> variablesMap = new HashMap<String, Object>(2);
-		variablesMap.put("result", false);
+	public void startProcess() {
+		String assignee = "小A";
 		// 实例
 		ProcessInstance pi = processEngine.getRuntimeService()
-				.startProcessInstanceByKey("BoundaryProcess", variablesMap);
-
+				.startProcessInstanceByKey("BoundarySignalProcess");
+ 
 		System.out.println("启动完成 pid:" + pi.getId() + " activitiID:"
 				+ pi.getActivityId() + " pdID:" + pi.getProcessDefinitionId());
+
+		List<Task> tasks = processEngine.getTaskService().createTaskQuery()
+				.taskAssignee(assignee).orderByTaskCreateTime().asc().list();
+
+		for (Task task : tasks) {
+			System.out.println(" id:" + task.getId());// 任务ID
+			System.out.println(" id:" + task.getName());
+			System.out.println(" id:" + task.getCreateTime());
+			System.out.println(" id:" + task.getAssignee());
+		}
 	}
 
 	@Test
 	public void completeTask() {
-		String taskId = "";
+		String taskId = "35002";
 		this.processEngine.getTaskService().complete(taskId);
+	}
+
+	@Test
+	public void sendSignal() { 
+		// 此处要注意，如果有多个流程实例，若运行至一个节点上，全部实例均会接收到。
+		this.processEngine.getRuntimeService().signalEventReceived(
+				"contractChangeSignal");
 	}
 }

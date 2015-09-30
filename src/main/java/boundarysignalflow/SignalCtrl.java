@@ -61,14 +61,20 @@ public class SignalCtrl {
 
 	@Test
 	public void completeTask() {
-		String taskId = "35002";
+		String taskId = "60004";
 		this.processEngine.getTaskService().complete(taskId);
 	}
 
 	@Test
 	public void sendSignal() { 
-		// 此处要注意，如果有多个流程实例，若运行至一个节点上，全部实例均会接收到。
-		this.processEngine.getRuntimeService().signalEventReceived(
-				"contractChangeSignal");
+		 
+		// 此处要注意，如果如果使用以下方法：有多个流程实例，若运行至一个节点上，全部实例均会接收到。
+		// 可以用于例如政策性改变时，所有流程实例都需要接收当中信号
+		// this.processEngine.getRuntimeService().signalEventReceived("contractChangeSignal"); 
+		
+		// 需要从taskid 查找到 executionId
+		String taskId = "65004";
+		String executionId = this.processEngine.getTaskService().createTaskQuery().taskId(taskId).singleResult().getExecutionId();
+		this.processEngine.getRuntimeService().signalEventReceived("contractChangeSignal", executionId); 
 	}
 }

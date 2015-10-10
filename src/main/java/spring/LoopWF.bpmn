@@ -6,7 +6,11 @@
     <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="usertask1"></sequenceFlow>
     <userTask id="usertask2" name="多人审核">
       <extensionElements>
-        <activiti:taskListener event="create" class="spring.AuditsListener"></activiti:taskListener>
+        <activiti:taskListener event="create" class="spring.AuditsListener">
+          <activiti:field name="employeeService">
+            <activiti:expression>${employeeService}</activiti:expression>
+          </activiti:field>
+        </activiti:taskListener>
       </extensionElements>
       <multiInstanceLoopCharacteristics isSequential="true" activiti:collection="${audits}" activiti:elementVariable="audit"></multiInstanceLoopCharacteristics>
     </userTask>

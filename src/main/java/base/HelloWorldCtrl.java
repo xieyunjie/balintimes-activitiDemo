@@ -18,7 +18,7 @@ public class HelloWorldCtrl {
 	public void deploy() {
 
 		Deployment deployment = processEngine.getRepositoryService()
-				.createDeployment().name("hellowordÁ÷³Ì")
+				.createDeployment().name("hellowordæµç¨‹")
 				.addClasspathResource("base/HelloWorld.bpmn")
 				.addClasspathResource("base/HelloWorld.png").deploy();
 
@@ -27,10 +27,10 @@ public class HelloWorldCtrl {
 	}
 
 	/**
-	 * Á÷³Ì¶¨Òå »á±¨´í Éú³ÉSQLÈç´Ë£¿select distinct RES.* from ACT_RE_PROCDEF RES order by
+	 * æµç¨‹å®šä¹‰ ä¼šæŠ¥é”™ ç”ŸæˆSQLå¦‚æ­¤ï¼Ÿselect distinct RES.* from ACT_RE_PROCDEF RES order by
 	 * order by RES.ID_ asc LIMIT ? OFFSET ?
 	 * 
-	 * attention: mybatis°æ±¾²»ÄÜ×îĞÂ£¬ÏÖÊ¹ÓÃ3.2.8£»·ñÔòËùÓĞµÄ²éÑ¯¶¼»á³ö´í
+	 * attention: mybatisç‰ˆæœ¬ä¸èƒ½æœ€æ–°ï¼Œç°ä½¿ç”¨3.2.8ï¼›å¦åˆ™æ‰€æœ‰çš„æŸ¥è¯¢éƒ½ä¼šå‡ºé”™
 	 * */
 	@Test
 	public void queryProcessDefinition() {
@@ -45,11 +45,11 @@ public class HelloWorldCtrl {
 	}
 
 	/**
-	 * Æô¶¯Á÷³Ì -- ¿ªÊ¼ -- ÏÂ¸öÖ´ĞĞÈËÎª(µÚÒ»²½)
+	 * å¯åŠ¨æµç¨‹ -- å¼€å§‹ -- ä¸‹ä¸ªæ‰§è¡Œäººä¸º(ç¬¬ä¸€æ­¥)
 	 * */
 	@Test
 	public void startProcess() {
-		// ÊµÀı
+		// å®ä¾‹
 		ProcessInstance pi = processEngine.getRuntimeService()
 				.startProcessInstanceByKey("HelloWorld");
 
@@ -58,18 +58,18 @@ public class HelloWorldCtrl {
 	}
 
 	/**
-	 * °ìÀíÈË²éÑ¯×Ô¼ºµÄ°ìÀíÈÎÎñ
+	 * åŠç†äººæŸ¥è¯¢è‡ªå·±çš„åŠç†ä»»åŠ¡
 	 * */
 	@Test
 	public void queryMyTask() {
-		String assignee = "µÚÈı²½";
+		String assignee = "ç¬¬ä¸‰æ­¥";
 		
-		// ·µ»ØµÄÊÇÁĞ±í ¶Ô¸öÈË
+		// è¿”å›çš„æ˜¯åˆ—è¡¨ å¯¹ä¸ªäºº
 		List<Task> list = processEngine.getTaskService().createTaskQuery()
 				.taskAssignee(assignee).orderByTaskCreateTime().asc().list();
 		
 		for (Task task : list) {
-			System.out.println(" id:" + task.getId());// ÈÎÎñID
+			System.out.println(" id:" + task.getId());// ä»»åŠ¡ID
 			System.out.println(" id:" + task.getName());
 			System.out.println(" id:" + task.getCreateTime());
 			System.out.println(" id:" + task.getAssignee());
@@ -77,14 +77,14 @@ public class HelloWorldCtrl {
 	}
 	
 	/**
-	 * °ìÀíÈÎÎñ
+	 * åŠç†ä»»åŠ¡
 	 * */
 	@Test
 	public void handleTask() {
-		//String taskID = "104"; // ´ËID¿ÉÒÔÓÉÉÏÒ»²½²éµÃ
+		//String taskID = "104"; // æ­¤IDå¯ä»¥ç”±ä¸Šä¸€æ­¥æŸ¥å¾—
 		//String taskID = "5102";
-		String taskID = "7602";
-		// °ìÀíÈÎÎñ
+		String taskID = "15004";
+		// åŠç†ä»»åŠ¡
 		processEngine.getTaskService().complete(taskID);		
 	}
 	

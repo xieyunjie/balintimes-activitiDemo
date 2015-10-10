@@ -16,6 +16,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -33,7 +34,7 @@ public class LoopWFCtrl {
 	@Test
 	public void deployBPNM() {
 
-		Deployment deployment = this.repositoryService.createDeployment().name("LoopCardinality流程").addClasspathResource("spring/LoopWF.bpmn")
+		Deployment deployment = this.repositoryService.createDeployment().name("LoopCardinality锟斤拷锟斤拷").addClasspathResource("spring/LoopWF.bpmn")
 				.addClasspathResource("spring/LoopWF.png").deploy();
 
 		System.out.println(deployment);
@@ -46,26 +47,24 @@ public class LoopWFCtrl {
 	@Test
 	public void submitBPNM() {
 
-		String creator = "小A";
+		String creator = "灏廇";
 		String bizKey = "crm-ba1a1840-6d6c-11e5-b1fb-c86000a05d5f";
 
 		Map<String, Object> variablesMap = new HashMap<String, Object>(2);
 		variablesMap.put("creator", creator);
 		List<String> audits = new ArrayList<String>(3);
-		audits.add("小E");
-		audits.add("小D");
-		audits.add("小C");
-		variablesMap.put("audits", audits);
-		// 启动流程
+		audits.add("灏廍");
+		audits.add("灏廌"); 
+		variablesMap.put("audits", audits); 
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("LoopWFProcess", bizKey, variablesMap);
-		System.out.println("启动完成 pid:" + pi.getId() + " activitiID:" + pi.getActivityId() + " pdID:" + pi.getProcessDefinitionId());
+		System.out.println("pid:" + pi.getId() + " activitiID:" + pi.getActivityId() + " pdID:" + pi.getProcessDefinitionId());
 
-		// 提交任务
+		// 锟结交锟斤拷锟斤拷
 		// Task task =
 		// this.taskService.createTaskQuery().processInstanceBusinessKey(bizKey).singleResult();
 		Task task = this.taskService.createTaskQuery().taskAssignee(creator).singleResult();
 		this.taskService.complete(task.getId());
-		System.out.println("提交任务");
+		System.out.println("瀹屾垚鎻愪氦");
 	}
 
 	@Test
@@ -75,7 +74,7 @@ public class LoopWFCtrl {
 		List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).orderByTaskCreateTime().asc().list();
 
 		for (Task task : tasks) {
-			System.out.println(" id:" + task.getId());// 任务ID
+			System.out.println(" id:" + task.getId());
 			System.out.println(" name:" + task.getName());
 			System.out.println(" createtime:" + task.getCreateTime());
 			System.out.println(" assignee:" + task.getAssignee());
@@ -88,4 +87,13 @@ public class LoopWFCtrl {
 		this.taskService.complete(taskId); 
 	}
 
+	
+	@Autowired
+	private EmployeeService employeeService;
+	
+	@Test
+	public void TestService() {
+		System.out.println(employeeService.getMsg());
+	}
+	
 }

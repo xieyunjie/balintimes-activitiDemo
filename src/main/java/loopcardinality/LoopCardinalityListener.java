@@ -38,8 +38,7 @@ public class LoopCardinalityListener implements TaskListener {
 		}
 
 		delegateTask.setAssignee(assignee);
-		delegateTask.setVariable("takeCount", --takeCount);
-
+		delegateTask.setVariable("takeCount", --takeCount); 
 	}
 
 }

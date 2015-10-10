@@ -59,17 +59,26 @@ public class LoopWFCtrl {
 		ProcessInstance pi = runtimeService.startProcessInstanceByKey("LoopWFProcess", bizKey, variablesMap);
 		System.out.println("pid:" + pi.getId() + " activitiID:" + pi.getActivityId() + " pdID:" + pi.getProcessDefinitionId());
 
-		// �ύ����
-		// Task task =
+
 		// this.taskService.createTaskQuery().processInstanceBusinessKey(bizKey).singleResult();
-		Task task = this.taskService.createTaskQuery().taskAssignee(creator).singleResult();
+		Task task = this.taskService.createTaskQuery().taskAssignee(creator).orderByTaskCreateTime().desc().list().get(0);
 		this.taskService.complete(task.getId());
 		System.out.println("完成提交");
+	}
+	
+	@Test
+	public void queryTask() {
+		String creator = "小e";
+		
+		Task task = this.taskService.createTaskQuery().taskAssignee(creator).orderByTaskCreateTime().desc().list().get(0);
+		this.taskService.complete(task.getId());
+		
+		System.out.println(task.getId());
 	}
 
 	@Test
 	public void getTask() {
-		String assignee = "СC";
+		String assignee = "小E";
 
 		List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).orderByTaskCreateTime().asc().list();
 
@@ -77,13 +86,13 @@ public class LoopWFCtrl {
 			System.out.println(" id:" + task.getId());
 			System.out.println(" name:" + task.getName());
 			System.out.println(" createtime:" + task.getCreateTime());
-			System.out.println(" assignee:" + task.getAssignee());
+			System.out.println(" assignee:" + task.getAssignee()); 
 		}
 	}
 
 	@Test
 	public void completeTask() {
-		String taskId = "7502";
+		String taskId = "2518";
 		this.taskService.complete(taskId); 
 	}
 

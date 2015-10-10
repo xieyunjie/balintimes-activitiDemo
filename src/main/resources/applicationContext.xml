@@ -12,9 +12,16 @@
 
 
 
-	<bean id="employeeService" class="spring.impl.EmployeeServiceImpl" />
-
+	<bean id="employeeDao" class="spring.impl.EmployeeDaoImpl" />
+	
+	<bean id="auditsGenerator" class="spring.AuditsGenerator" />
+	<bean id="auditsExecution" class="spring.AuditsExecution"/>
+	<bean id="auditsTask" class="spring.AuditsTask"/>
+	
+	<bean id="employeeService" class="spring.impl.EmployeeServiceImpl">
+		<property name="employeeDao" ref="employeeDao" />
+	</bean> 
+	
 	<import resource="classpath:activitiContext.xml" />
-
-	<!-- <bean id="auditsListener" class="spring.AuditsListener"/> -->
+ 
 </beans>

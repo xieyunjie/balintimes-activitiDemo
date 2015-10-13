@@ -20,9 +20,11 @@
 	
 	<bean id="employeeService" class="spring.impl.EmployeeServiceImpl">
 		<property name="employeeDao" ref="employeeDao" />
-	</bean> 
+	</bean>
+	 
+	<bean id = "adminAuditListener" class="spring.AdminAuditListener"></bean> 
 	
-	<bean id = "adminAuditListener" class="spring.AdminAuditListener"></bean>
+	<bean id="customerService" class="springtx.service.impl.CustomerServiceImpl" />
 	
 	<import resource="classpath:activitiContext.xml" />
  

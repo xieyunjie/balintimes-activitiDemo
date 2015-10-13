@@ -23,7 +23,8 @@ public class AuditsListener implements TaskListener {
 	public void notify(DelegateTask delegateTask) {
 		// TODO Auto-generated method stub
 
-		Object auditObject = delegateTask.getVariable("audit");
+		Object auditObject = delegateTask.getVariable("audit"); 
+		
 		delegateTask.setAssignee(auditObject.toString()); 
 		
 		System.out.println("creatorEx === " + this.creatorEx.getValue(delegateTask).toString());

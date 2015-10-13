@@ -22,6 +22,8 @@
 		<property name="employeeDao" ref="employeeDao" />
 	</bean> 
 	
+	<bean id = "adminAuditListener" class="spring.AdminAuditListener"></bean>
+	
 	<import resource="classpath:activitiContext.xml" />
  
 </beans>

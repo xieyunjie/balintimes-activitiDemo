@@ -12,20 +12,20 @@
     <sequenceFlow id="flow4" sourceRef="usertask2" targetRef="servicetask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${fallback=='0'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask1" name="邮件通知提交者">
+    <serviceTask id="servicetask1" name="邮件通知提交者" activiti:expression="#{auditProcessListener.notifyAuditResult(pass)}">
       <documentation>此处的服务应该读取相关的</documentation>
     </serviceTask>
     <sequenceFlow id="flow5" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
     <boundaryEvent id="boundarytimer1" name="Timer" attachedToRef="usertask2" cancelActivity="false">
       <timerEventDefinition>
-        <timeDuration>PT5H</timeDuration>
+        <timeDuration>PT1M</timeDuration>
       </timerEventDefinition>
     </boundaryEvent>
     <sequenceFlow id="flow6" sourceRef="boundarytimer1" targetRef="servicetask2"></sequenceFlow>
     <sequenceFlow id="flow7" name="回退" sourceRef="usertask2" targetRef="usertask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${fallback=='1'}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="邮件提醒审核"></serviceTask>
+    <serviceTask id="servicetask2" name="邮件提醒审核" activiti:expression="#{auditProcessListener.remindToAudit(execution)}"></serviceTask>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_CRMAuditProcess">
     <bpmndi:BPMNPlane bpmnElement="CRMAuditProcess" id="BPMNPlane_CRMAuditProcess">
@@ -38,14 +38,14 @@
       <bpmndi:BPMNShape bpmnElement="usertask2" id="BPMNShape_usertask2">
         <omgdc:Bounds height="55.0" width="105.0" x="381.0" y="300.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
+        <omgdc:Bounds height="30.0" width="30.0" x="419.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
         <omgdc:Bounds height="35.0" width="35.0" x="770.0" y="310.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
         <omgdc:Bounds height="55.0" width="105.0" x="580.0" y="300.0"></omgdc:Bounds>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape bpmnElement="boundarytimer1" id="BPMNShape_boundarytimer1">
-        <omgdc:Bounds height="30.0" width="30.0" x="419.0" y="290.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
         <omgdc:Bounds height="55.0" width="105.0" x="459.0" y="170.0"></omgdc:Bounds>
@@ -77,7 +77,7 @@
         <omgdi:waypoint x="192.0" y="427.0"></omgdi:waypoint>
         <omgdi:waypoint x="192.0" y="355.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="290.0" y="409.0"></omgdc:Bounds>
+          <omgdc:Bounds height="14.0" width="24.0" x="290.0" y="409.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>

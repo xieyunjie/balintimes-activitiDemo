@@ -1,6 +1,10 @@
 package base;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.zip.ZipInputStream;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
@@ -8,12 +12,23 @@ import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+
+import sun.misc.ClassLoaderUtil;
 
 public class HelloWorldCtrl {
 
 	ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+	@Test
+	public void deployZip() {  
+System.out.println(this.getClass().getResource("CRMAuditProcess.zip").getPath());
+//			ZipInputStream zipInputStream = new ZipInputStream(this.getClass().getResourceAsStream("CRMAuditProcess.zip"));
+//			Deployment deployment = processEngine.getRepositoryService()
+//					.createDeployment().name("helloword流程").addZipInputStream(zipInputStream).deploy();
+//			System.out.println("OKOK"); 
 
+	}
 	@Test
 	public void deploy() {
 

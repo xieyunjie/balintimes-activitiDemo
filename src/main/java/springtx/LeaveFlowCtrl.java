@@ -14,6 +14,7 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -51,14 +52,9 @@ public class LeaveFlowCtrl {
 	@Test
 	public void submit() {
 		try {
-			String creator = "小A";
-
+			String creator = "小A"; 
 			Map<String, Object> variablesMap = new HashMap<String, Object>(2);
 			variablesMap.put("creator", creator);
-			List<String> audits = new ArrayList<String>(3);
-			audits.add("小E");
-			audits.add("小D");
-			variablesMap.put("audits", audits);
 
 			ProcessInstance pi = runtimeService.startProcessInstanceByKey("SpringTxProcess", variablesMap);
 			System.out.println("pid:" + pi.getId() + " activitiID:" + pi.getActivityId() + " pdID:" + pi.getProcessDefinitionId());
@@ -66,7 +62,16 @@ public class LeaveFlowCtrl {
 			System.out.println(exception);
 		}
 	}
-
+@Test
+	public void queryTask() {
+		
+		String audit = "小E";
+		List<Task> list = this.taskService.createTaskQuery().taskCandidateOrAssigned(audit).list();
+		for (Task task : list) {
+			System.out.println(task.toString());
+		}
+	}
+	
 	@Test
 	public void completeTask() {
 		String taskId = "42502";

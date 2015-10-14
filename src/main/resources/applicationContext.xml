@@ -25,6 +25,7 @@
 	<bean id = "adminAuditListener" class="spring.AdminAuditListener"></bean> 
 	
 	<bean id="customerService" class="springtx.service.impl.CustomerServiceImpl" />
+	<bean id="leaveFlowListener" class="springtx.LeaveFlowListener" />
 	
 	<import resource="classpath:activitiContext.xml" />
  
